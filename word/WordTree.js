@@ -33,9 +33,13 @@ WordTree.prototype.__init = function (keywords) {
 
         for(var i = 0, length = keyword.length; i < length; i++){
 
-            var　charCode　=　convert.lowercase(keyword[i].charCodeAt(0));
+            var　charCode　=　convert.lowercase(convert.ascii(keyword[i].charCodeAt(0)));
 
             if(judge.isInvisibleChar(charCode)){
+                continue;
+            }
+
+            if(judge.isSpecharsChar(charCode)){
                 continue;
             }
 

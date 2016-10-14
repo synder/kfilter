@@ -67,7 +67,7 @@ Filter.prototype.search = function (text) {
             continue;
         }
 
-        firstLoweredCharCodeTemp　=　convert.lowercase(charCode);
+        firstLoweredCharCodeTemp　=　convert.lowercase(convert.ascii(charCode));
 
         nextNode = rootNode.childs[firstLoweredCharCodeTemp];
 
@@ -98,7 +98,7 @@ Filter.prototype.search = function (text) {
                 break;
             }
 
-            followLoweredCharCodeTemp　=　convert.lowercase(text[start + offset].charCodeAt(0));
+            followLoweredCharCodeTemp　=　convert.lowercase(convert.ascii(text[start + offset].charCodeAt(0)));
 
             if (judge.isSpecharsChar(followLoweredCharCodeTemp)) {
                 offset++;
