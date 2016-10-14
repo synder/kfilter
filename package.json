@@ -1,0 +1,20 @@
+{
+  "name": "kfilter",
+  "version": "1.0.0",
+  "main": "index",
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/synder/kfilter.git"
+  },
+  "dependencies": {
+
+  },
+  "author": "SYNDE KEYES <812256717@qq.com>",
+  "keywords": [
+    "aapt",
+    "apk",
+    "apk parser",
+    "android"
+  ],
+  "license": "MIT"
+}
