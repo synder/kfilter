@@ -13,12 +13,8 @@ filter.append('baidu.com');
 
 var str = "这是一本垃-圾书, 可以买卖军　刀海洛因, fu（）ck, ｆｕｃｋ,ｆｕ％ｃｋ, 网址：http://www.baidu.com";
 
-var os = require('os');
+var results = filter.search(str);
 
-var temp = process.memoryUsage().heapUsed;
-console.time('a');
-for(var i = 0; i < 1000000; i++){
-    filter.search(str);
+for(var i = 0; i < results.indexs.length; i++) {
+    console.log(str.substr(results.indexs[i].index, results.indexs[i].length), results.indexs[i].weight);
 }
-console.timeEnd('a');
-console.log((process.memoryUsage().heapUsed - temp) / 1024 / 1024 );

@@ -16,6 +16,52 @@ const WordTree = function (keywords) {
     this.__init(keywords);
 };
 
+
+WordTree.prototype.__gen = function (keyword, weight) {
+
+    var self = this;
+
+    if(!self.root){
+        self.root = new WordNode();
+    }
+
+    var tempNode = self.root;
+
+    for(var i = 0, length = keyword.length; i < length; i++){
+
+        var　charCode　=　convert.lowercase(convert.ascii(keyword[i].charCodeAt(0)));
+
+        if(judge.isInvisibleChar(charCode)){
+            continue;
+        }
+
+        if(judge.isSpecharsChar(charCode)){
+            continue;
+        }
+
+        if(tempNode.childs == null){
+            tempNode.childs = {};
+        }
+
+        var nextNode = tempNode.childs[charCode];
+
+        if(nextNode == null){
+            var newNode = new WordNode(weight);
+
+            tempNode.childs[charCode] = newNode;
+
+            nextNode = newNode;
+        }
+
+        tempNode = nextNode;
+
+        if(i == length - 1){
+            tempNode.end = true;
+        }
+    }
+};
+
+
 WordTree.prototype.__init = function (keywords) {
 
     if(!keywords){
@@ -24,65 +70,23 @@ WordTree.prototype.__init = function (keywords) {
 
     var self = this;
 
-    if(!self.root){
-        self.root = new WordNode();
-    }
-
-    var genTree = function (keyword, weight) {
-        var tempNode = self.root;
-
-        for(var i = 0, length = keyword.length; i < length; i++){
-
-            var　charCode　=　convert.lowercase(convert.ascii(keyword[i].charCodeAt(0)));
-
-            if(judge.isInvisibleChar(charCode)){
-                continue;
-            }
-
-            if(judge.isSpecharsChar(charCode)){
-                continue;
-            }
-
-            if(tempNode.childs == null){
-                tempNode.childs = {};
-            }
-
-            var nextNode = tempNode.childs[charCode];
-
-            if(nextNode == null){
-                var newNode = new WordNode(weight);
-
-                tempNode.childs[charCode] = newNode;
-
-                nextNode = newNode;
-            }
-
-            tempNode = nextNode;
-
-            if(i == length - 1){
-                tempNode.end = true;
-            }
-        }
-    };
-
-
     if(typeof keywords == 'string'){
         keywords　=　[keywords];
 
         keywords.forEach(function (keyword) {
-            genTree(keyword, 1);
+            self.__gen(keyword, 1);
         });
 
     }else if(Array.isArray(keywords)){
 
         keywords.forEach(function (keyword) {
-            genTree(keyword, 1);
+            self.__gen(keyword, 1);
         });
 
     }else {
         for(var key in keywords){
             if(keywords.hasOwnProperty(key)){
-                genTree(key, keywords[key]);
+                self.__gen(key, keywords[key] || 1);
             }
         }
     }
