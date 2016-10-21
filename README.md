@@ -45,6 +45,7 @@ for(var i = 0; i < results.indexes.length; i++) {
 * */
 
 /*
+垃-圾 1
 av 1
 军　刀 1
 海洛因 3
