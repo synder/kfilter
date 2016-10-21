@@ -12,7 +12,7 @@ filter.append('fuck');
 filter.append('av');
 filter.append('baidu.com');
 
-var str = "这是一本垃-圾书, avi 可以a v买卖军　刀海洛因, fu你ck, ｆｕ）ｃｋ,ｆｕ％ｃｋ, 网址：http://www.baidu.com";
+var str = "这是一本垃-圾书, avi 可以av book买卖军　刀海洛因, fu你ck, ｆｕ）ｃｋ,ｆｕ％ｃｋ, 网址：http://www.baidu.com, 催*情*药";
 
 var results = filter.search(str);
 
