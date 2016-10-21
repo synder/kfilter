@@ -74,6 +74,7 @@ Filter.prototype.search = function (text) {
 
         nextNode = rootNode.childs[firstLoweredCharCodeTemp];
 
+        //just if the word is the an english word start
         if(isAlpha == false){
             isAlpha = judge.isAlphaChar(firstLoweredCharCodeTemp);
             isWordStart = isAlpha;
