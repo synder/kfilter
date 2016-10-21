@@ -1,4 +1,6 @@
-
+/**
+ * @desc 关键字搜索
+ * */
 
 const judge = require('./lib/judge');
 const convert = require('./lib/convert');
@@ -31,9 +33,9 @@ Filter.prototype.search = function (text) {
     var result = {
         text:{
             invisible: 0,
-            mathed: 0,
+            matched: 0,
         },
-        indexs: []
+        indexes: []
     };
 
     var rootNode = this.__tree.root;
@@ -44,7 +46,7 @@ Filter.prototype.search = function (text) {
 
     var start = 0;
 
-    //the　firts　loop　param
+    //the　first　loop　param
     var firstLoweredCharCodeTemp = -1;
 
     //the　follow　loop　param
@@ -55,6 +57,7 @@ Filter.prototype.search = function (text) {
     //this first char matched, check the first match char is chinese or alpha
     var isChinese = false;
     var isAlpha = false;
+    var isWordStart = false;
 
     //the　first　loop
     while (start < text.length){
@@ -71,23 +74,27 @@ Filter.prototype.search = function (text) {
 
         nextNode = rootNode.childs[firstLoweredCharCodeTemp];
 
+        if(isAlpha == false){
+            isAlpha = judge.isAlphaChar(firstLoweredCharCodeTemp);
+            isWordStart = isAlpha;
+        }else{
+            isAlpha = judge.isAlphaChar(firstLoweredCharCodeTemp);
+            isWordStart = false;
+        }
+
         //the fist char is not match, then continue
         if(!nextNode){
             start++;
             continue;
         }
 
-        //this first char matched, check the first match char is chinese or alpha
-        isChinese = false;
-        isAlpha = false;
-
-        if(judge.isChineseChar(firstLoweredCharCodeTemp)){
-            isChinese = true;
-        }else {
-            if(judge.isAlphaChar(firstLoweredCharCodeTemp)){
-                isAlpha = true;
-            }
+        if(isAlpha == true && isWordStart == false){
+            start++;
+            continue;
         }
+
+        //this first char matched, check the first match char is chinese or alpha
+        isChinese = judge.isChineseChar(firstLoweredCharCodeTemp);
 
         //this first char matched, match the next chars
         var offset = 1;
@@ -137,15 +144,26 @@ Filter.prototype.search = function (text) {
         //matched to the last
         if(nextNode && nextNode.end === true) {
 
-            result.indexs.push({
-                index: start,
+            var temp = start;
+            start = start + offset; //skip the word which has been matched
+
+            var next = temp + offset;
+
+            if (isAlpha == true){
+                if (text.length > next){
+                    if (judge.isAlphaChar(text.charCodeAt(next)) == true){
+                        continue;
+                    }
+                }
+            }
+
+            result.indexes.push({
+                index: temp,
                 length: offset,
                 weight: nextNode.weight
             });
 
-            result.text.mathed += offset;
-
-            start = start + offset; //skip the word which has been matched
+            result.text.matched += offset;
 
         } else {
             start++;
